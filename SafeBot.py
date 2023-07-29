@@ -41,6 +41,7 @@ class SafeBot(Bot):
                                                                    message_id,
                                                                    inline_message_id,
                                                                    parse_mode,
+                                                                   entities,
                                                                    disable_web_page_preview,
                                                                    reply_markup))
 
@@ -67,7 +68,8 @@ class SafeBot(Bot):
                             disable_notification=None, reply_to_message_id=None, reply_markup=None):
         log = logging.getLogger('bot')
         try:
-            await super(SafeBot, self).send_message(chat_id, text, parse_mode, disable_web_page_preview, message_thread_id,
+            await super(SafeBot, self).send_message(chat_id, text, parse_mode, disable_web_page_preview,
+                                                    message_thread_id,
                                                     disable_notification, reply_to_message_id, reply_markup)
         except exceptions.BotBlocked:
             log.error(f"Target [ID:{chat_id}]: blocked by user")
