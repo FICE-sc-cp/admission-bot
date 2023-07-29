@@ -6,8 +6,6 @@ from aiogram.utils import exceptions
 
 from timer import Timer
 
-import prometheus
-
 
 class SafeBot(Bot):
     def __init__(self, token):
@@ -17,13 +15,11 @@ class SafeBot(Bot):
         async def event_scheduler():
             try:
                 await self._events.pop(0)
-                prometheus.bot_requests_cnt.inc({})
             except IndexError:
                 pass
             except exceptions.MessageNotModified:
                 pass  # ignore, most probably because of queries
             except Exception as e:
-                prometheus.bot_requests_cnt.inc({})
                 logging.error(f'Exception in event scheduler: {e}')
 
         self._scheduler = Timer(1 / self._reqs_per_second, event_scheduler, infinite=True, immediate=True)

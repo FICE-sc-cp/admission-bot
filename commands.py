@@ -10,7 +10,6 @@ from utils import get_spherical_distance
 import config
 import logging
 from aiogram.utils import exceptions
-import prometheus
 from datetime import datetime
 
 logger = logging.getLogger('commands')
@@ -18,7 +17,6 @@ logger = logging.getLogger('commands')
 
 def apply_handlers(aq: AdmissionQueue):
     async def start_handler(message: types.Message):
-        prometheus.start_handler_cnt.inc({})
         user = await db.users.find_one({'uid': message.chat.id})
         if user is not None:
             if user['stage'] == Stage.menu:
@@ -66,7 +64,6 @@ def apply_handlers(aq: AdmissionQueue):
                                     parse_mode=types.ParseMode.HTML)
 
     async def help_handler(message: types.Message):
-        prometheus.help_btn_cnt.inc({})
         await message.reply(t('SUPPORT'), reply_markup=keyboards.get_info_kbd())
 
     async def query_handler(query: types.CallbackQuery):
@@ -129,7 +126,6 @@ def apply_handlers(aq: AdmissionQueue):
                                                   reply_markup=keyboards.get_geo_kbd(user['lang']))
 
         elif query.data.startswith('GetMyQueue'):
-            prometheus.get_my_queue_cnt.inc({})
             user_data = await aq.aapi.get_user_info(user['uid'])
             queues = user_data['queues']
             queue_id = int(query.data.split('GetMyQueue', 1)[1])
@@ -180,8 +176,6 @@ def apply_handlers(aq: AdmissionQueue):
             position, code = await aq.aapi.add_user_to_queue(queue_id, user['uid'])
             if code == 400:
                 return await query.answer(position['message'])
-
-            prometheus.queue_registrations_cnt.inc({})
 
             if 'position' in position and 'code' in position['position']:
                 await query.message.answer_photo(open(f'q_nums/{position["position"]["code"]}.jpg', 'rb'),
@@ -245,8 +239,6 @@ def apply_handlers(aq: AdmissionQueue):
         lon = message.location.longitude
         user = await db.users.find_one({'uid': message.from_user.id})
 
-        prometheus.geo_sent_cnt.inc({})
-
         if user is None:
             return await start_handler(message)
 
@@ -267,10 +259,8 @@ def apply_handlers(aq: AdmissionQueue):
     async def complete_token_registration(user, message):
         if user['opt_reg']:
             prefix = 'o_'
-            prometheus.user_full_registrations_cnt.inc({})
         else:
             prefix = 't_'
-            prometheus.user_registrations_cnt.inc({})
         user[prefix + user['tokens'][user['template_stage']]['token']] = message.text.strip()
 
         data = {}
