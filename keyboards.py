@@ -1,5 +1,4 @@
 from aiogram import types
-from i18n import t
 
 
 def divide_chunks(a, n):
@@ -13,7 +12,7 @@ def get_geo_kbd(lang='ua'):
         one_time_keyboard=True,
         keyboard=[
             [
-                types.KeyboardButton(t('SEND_POS_BTN', locale=lang), request_location=True)
+                types.KeyboardButton("🌍 Надіслати розташування", request_location=True)
             ]
         ],
         resize_keyboard=True
@@ -40,15 +39,15 @@ def get_menu_kbd(lang='ua', opt_reg_done: bool = False):
             row_width=2,
             inline_keyboard=(
                 (
-                    types.InlineKeyboardButton(t('SHOW_ALL_QUEUES_BTN', locale=lang), callback_data='AllQueues'),
-                    types.InlineKeyboardButton(t('SHOW_MY_QUEUES_BTN', locale=lang), callback_data='MyQueues'),
+                    types.InlineKeyboardButton("Усі черги", callback_data='AllQueues'),
+                    types.InlineKeyboardButton("Мої черги", callback_data='MyQueues'),
                 ),
                 (
-                    types.InlineKeyboardButton(t('HELP_BTN', locale=lang), url=t('TELEGRAPH_URL', locale=lang)),
-                    types.InlineKeyboardButton(t('TECHSUPPORT_BTN', locale=lang), url=t('LIVEGRAM_URL', locale=lang)),
+                    types.InlineKeyboardButton("ℹ️ Інформація", url="https://telegra.ph/%D0%86nformac%D1%96ya-pro-elektronnu-chergu-pri-vstup%D1%96-na-F%D0%86OT-cherez-Telegram-bot-fiot-queue-bot-08-26"),
+                    types.InlineKeyboardButton("🆘 Допомога", url="https://t.me/fiot_help_bot"),
                 ),
                 (
-                    types.InlineKeyboardButton(t('CHANGE_DATA_BTN', locale=lang), callback_data='ChangeData'),
+                    types.InlineKeyboardButton("Змінити реєстраційні дані", callback_data='ChangeData'),
                 )
             )
         )
@@ -57,18 +56,18 @@ def get_menu_kbd(lang='ua', opt_reg_done: bool = False):
             row_width=2,
             inline_keyboard=(
                 (
-                    types.InlineKeyboardButton(t('OPT_REGISTRATION_BTN', locale=lang), callback_data='OptReg'),
+                    types.InlineKeyboardButton("❗️ Продовжити реєстрацію ❗️", callback_data='OptReg'),
                 ),
                 (
-                    types.InlineKeyboardButton(t('SHOW_ALL_QUEUES_BTN', locale=lang), callback_data='AllQueues'),
-                    types.InlineKeyboardButton(t('SHOW_MY_QUEUES_BTN', locale=lang), callback_data='MyQueues'),
+                    types.InlineKeyboardButton("Усі черги", callback_data='AllQueues'),
+                    types.InlineKeyboardButton("Мої черги", callback_data='MyQueues'),
                 ),
                 (
-                    types.InlineKeyboardButton(t('HELP_BTN', locale=lang), url=t('TELEGRAPH_URL', locale=lang)),
-                    types.InlineKeyboardButton(t('TECHSUPPORT_BTN', locale=lang), url=t('LIVEGRAM_URL', locale=lang)),
+                    types.InlineKeyboardButton("ℹ️ Інформація", url="https://telegra.ph/%D0%86nformac%D1%96ya-pro-elektronnu-chergu-pri-vstup%D1%96-na-F%D0%86OT-cherez-Telegram-bot-fiot-queue-bot-08-26"),
+                    types.InlineKeyboardButton("🆘 Допомога", url="https://t.me/fiot_help_bot"),
                 ),
                 (
-                    types.InlineKeyboardButton(t('CHANGE_DATA_BTN', locale=lang), callback_data='ChangeData'),
+                    types.InlineKeyboardButton("Змінити реєстраційні дані", callback_data='ChangeData'),
                 )
             )
         )
@@ -79,10 +78,10 @@ def get_info_kbd(lang='ua'):
         row_width=2,
         inline_keyboard=(
             (
-                types.InlineKeyboardButton(t('HELP_BTN', locale=lang), url=t('TELEGRAPH_URL', locale=lang)),
+                types.InlineKeyboardButton("ℹ️ Інформація", url="https://telegra.ph/%D0%86nformac%D1%96ya-pro-elektronnu-chergu-pri-vstup%D1%96-na-F%D0%86OT-cherez-Telegram-bot-fiot-queue-bot-08-26"),
             ),
             (
-                types.InlineKeyboardButton(t('TECHSUPPORT_BTN', locale=lang), url=t('LIVEGRAM_URL', locale=lang)),
+                types.InlineKeyboardButton("🆘 Допомога", url="https://t.me/fiot_help_bot"),
             ),
         )
     )
@@ -93,7 +92,7 @@ def get_to_menu_kbd(lang='ua'):
         row_width=1,
         inline_keyboard=(
             (
-                types.InlineKeyboardButton(t('BACK_TO_MENU_BTN', locale=lang), callback_data='Menu'),
+                types.InlineKeyboardButton("🔙 Повернутися у меню", callback_data='Menu'),
             ),
         )
     )
@@ -106,7 +105,7 @@ def get_queues_kbd(queues, my_queues=False, lang='ua'):
                for queue in queues)
     return types.InlineKeyboardMarkup(
         row_width=2,
-        inline_keyboard=list(divide_chunks(kbd, 2)) + [[types.InlineKeyboardButton(t('BACK_TO_MENU_BTN', locale=lang),
+        inline_keyboard=list(divide_chunks(kbd, 2)) + [[types.InlineKeyboardButton("🔙 Повернутися у меню",
                                                                                    callback_data='Menu')]]
     )
 
@@ -115,13 +114,13 @@ def get_update_my_queue_kbd(queue_id, lang='ua'):
     return types.InlineKeyboardMarkup(
         inline_keyboard=(
             (
-                types.InlineKeyboardButton(t('UPDATE_QUEUE_BTN', locale=lang), callback_data=f'GetMyQueue{queue_id}'),
+                types.InlineKeyboardButton("🔄 Оновити", callback_data=f'GetMyQueue{queue_id}'),
             ),
             (
-                types.InlineKeyboardButton(t('LEAVE_QUEUE_BTN', locale=lang), callback_data=f'LeaveQueue{queue_id}'),
+                types.InlineKeyboardButton("🏃 Покинути чергу", callback_data=f'LeaveQueue{queue_id}'),
             ),
             (
-                types.InlineKeyboardButton(t('BACK_TO_MENU_BTN', locale=lang), callback_data='Menu'),
+                types.InlineKeyboardButton("🔙 Повернутися у меню", callback_data='Menu'),
             )
         )
     )
@@ -131,10 +130,10 @@ def get_register_in_queue_kbd(queue_id, lang='ua'):
     return types.InlineKeyboardMarkup(
         inline_keyboard=(
             (
-                types.InlineKeyboardButton(t('REGISTER_IN_QUEUE_BTN', locale=lang), callback_data=f'RegInQueue{queue_id}'),
+                types.InlineKeyboardButton("Зареєструватися у черзі", callback_data=f'RegInQueue{queue_id}'),
             ),
             (
-                types.InlineKeyboardButton(t('BACK_TO_MENU_BTN', locale=lang), callback_data='Menu'),
+                types.InlineKeyboardButton("🔙 Повернутися у меню", callback_data='Menu'),
             )
         )
     )
