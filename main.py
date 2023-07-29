@@ -43,13 +43,6 @@ class AdmissionQueue:
 
         # noinspection PyUnboundLocalVariable
         self.aapi = AdmissionAPI(aapi_host, aapi_token)
-        # i18n setup
-
-        cwd = getcwd()
-        translations_dir = path.abspath(path.join(cwd, 'translations'))
-        if not path.isdir(translations_dir):
-            logging.error(f"i18n: Translations path ({translations_dir}) does not exist")
-            exit(-1)
 
         # sendMessage endpoint setup
 
