@@ -61,16 +61,33 @@ class SafeBot(Bot):
                            types.ReplyKeyboardRemove,
                            types.ForceReply, None] = None
                            ):
-        self._events.append(self._send_message(chat_id, text, parse_mode, disable_web_page_preview, message_thread_id,
-                                               disable_notification, reply_to_message_id, reply_markup))
+        self._events.append(
+            self._send_message(chat_id, text, parse_mode, entities, disable_web_page_preview, message_thread_id,
+                               disable_notification, protect_content, reply_to_message_id, allow_sending_without_reply,
+                               reply_markup))
 
-    async def _send_message(self, chat_id, text, parse_mode=None, disable_web_page_preview=None, message_thread_id=None,
-                            disable_notification=None, reply_to_message_id=None, reply_markup=None):
+    async def _send_message(self,
+                            chat_id: typing.Union[base.Integer, base.String],
+                            text: base.String,
+                            parse_mode: typing.Optional[base.String] = None,
+                            entities: typing.Optional[typing.List[types.MessageEntity]] = None,
+                            disable_web_page_preview: typing.Optional[base.Boolean] = None,
+                            message_thread_id: typing.Optional[base.Integer] = None,
+                            disable_notification: typing.Optional[base.Boolean] = None,
+                            protect_content: typing.Optional[base.Boolean] = None,
+                            reply_to_message_id: typing.Optional[base.Integer] = None,
+                            allow_sending_without_reply: typing.Optional[base.Boolean] = None,
+                            reply_markup: typing.Union[types.InlineKeyboardMarkup,
+                            types.ReplyKeyboardMarkup,
+                            types.ReplyKeyboardRemove,
+                            types.ForceReply, None] = None
+                            ):
         log = logging.getLogger('bot')
         try:
-            await super(SafeBot, self).send_message(chat_id, text, parse_mode, disable_web_page_preview,
+            await super(SafeBot, self).send_message(chat_id, text, parse_mode, entities, disable_web_page_preview,
                                                     message_thread_id,
-                                                    disable_notification, reply_to_message_id, reply_markup)
+                                                    disable_notification, protect_content, reply_to_message_id,
+                                                    allow_sending_without_reply, reply_markup)
         except exceptions.BotBlocked:
             log.error(f"Target [ID:{chat_id}]: blocked by user")
         except exceptions.ChatNotFound:

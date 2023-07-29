@@ -23,8 +23,7 @@ def apply_handlers(aq: AdmissionQueue):
                 await message.answer(
                     "<b>Електронна черга ФІОТ</b>\n\nДля реєстрації у черзі на подання документів, натисніть \"Усі черги\" та оберіть необхідну вам.\n\nЯкщо у вас виникнуть якісь запитання чи проблеми, натисніть кнопку \"Допомога\" та напишіть нам про це.\n\nЯкщо ви хочете прискорити подання документів, натисніть кнопку <b>Продовжити реєстрацію</b>.",
                     reply_markup=keyboards.get_menu_kbd(user['lang'],
-                                                        user[
-                                                            'opt_reg_completed']),
+                                                        user['opt_reg_completed']),
                     parse_mode=types.ParseMode.HTML)
             elif user['stage'] in [Stage.geo, Stage.leave_queue] or (
                     user['stage'] == Stage.template and user['opt_reg']):
