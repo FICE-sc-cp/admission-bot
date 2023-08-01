@@ -19,6 +19,12 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: SecretStr
     POSTGRES_DB: str
 
+    REDIS_HOST: str
+    REDIS_PORT: int
+    REDIS_USERNAME: str
+    REDIS_PASSWORD: SecretStr
+    REDIS_DB: int
+
     KM_RADIUS: Optional[int] = 2
     LAT: Optional[float] = 50.447322
     LON: Optional[float] = 30.459321

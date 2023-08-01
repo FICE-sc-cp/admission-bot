@@ -7,10 +7,21 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from app.bot.handlers import router as main_router
 from app.bot.middlewares.sessionmaker import SessionMaker
 from app.settings import settings
+from redis import asyncio as aioredis
+from aiogram.fsm.storage.redis import RedisStorage
 
 
 def create_dispatcher() -> Dispatcher:
-    dispatcher = Dispatcher()
+    redis = aioredis.Redis(
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        username=settings.REDIS_USERNAME,
+        password=settings.REDIS_PASSWORD.get_secret_value(),
+        decode_responses=True
+    )
+
+    storage = RedisStorage(redis=redis)
+    dispatcher = Dispatcher(storage=storage)
 
     engine = create_async_engine(
         URL.create(
