@@ -11,3 +11,7 @@ class User(Base):
     first_name: Mapped[str]
     last_name: Mapped[str]
     surname: Mapped[Optional[str]]
+    phone_number: Mapped[str]
+    email: Mapped[str]
+    dorm: Mapped[bool]
+    print_edbo: Mapped[bool]
