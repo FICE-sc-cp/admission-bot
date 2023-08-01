@@ -1,7 +1,9 @@
 import math
 
+from app.settings import settings
 
-def get_spherical_distance(lat1, lon1, lat2, lon2):
+
+def get_spherical_distance(lat1: float, lon1: float, lat2: float = settings.LAT, lon2: float = settings.LON):
     def rad(x):
         return x * math.pi / 180
     R = 6371e3
