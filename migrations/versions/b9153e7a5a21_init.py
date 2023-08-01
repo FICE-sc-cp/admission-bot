@@ -1,8 +1,8 @@
-"""Added user
+"""init
 
-Revision ID: e555b8755ff8
+Revision ID: b9153e7a5a21
 Revises: 
-Create Date: 2023-08-01 15:43:53.487086
+Create Date: 2023-08-01 22:43:17.681866
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e555b8755ff8'
+revision = 'b9153e7a5a21'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,11 @@ def upgrade() -> None:
     sa.Column('first_name', sa.String(), nullable=False),
     sa.Column('last_name', sa.String(), nullable=False),
     sa.Column('surname', sa.String(), nullable=True),
+    sa.Column('username', sa.String(), nullable=True),
+    sa.Column('phone', sa.String(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('is_dorm', sa.Boolean(), nullable=False),
+    sa.Column('printed_edbo', sa.Boolean(), nullable=False),
     sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_users'))
     )

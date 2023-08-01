@@ -13,8 +13,8 @@ class BaseAPI:
     _base_url: Optional[URL] = None
 
     def __init__(self):
+        self._token = settings.AAPI_TOKEN.get_secret_value()
         self._session = ClientSession(self.base_url, headers=self.get_headers())
-        self._token = settings.AAPI_TOKEN
 
     def get_headers(self):
         return {

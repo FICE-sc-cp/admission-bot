@@ -25,9 +25,9 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: SecretStr
     REDIS_DB: int
 
-    KM_RADIUS: Optional[int] = 2
-    LAT: Optional[float] = 50.447322
-    LON: Optional[float] = 30.459321
+    KM_RADIUS: int = 2
+    LAT: float = 50.447322
+    LON: float = 30.459321
 
     @property
     def WEBHOOK_URL(self) -> str:
