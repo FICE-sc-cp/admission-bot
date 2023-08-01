@@ -13,4 +13,4 @@ class RegisterUser(BaseModel):
     email: str
     speciality: str
     is_dorm: bool = Field(..., serialization_alias="isDorm")
-    printed_edbo: bool = Field(..., serialization_alias="printedEdbo")
+    printed_edbo: Optional[bool] = Field(None, serialization_alias="printedEdbo")

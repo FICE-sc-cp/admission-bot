@@ -1,11 +1,8 @@
 import email_validator
 import phonenumbers
-import re
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
-from app.bot.admission_api.types.register_user import RegisterUser
-from app.bot.admission_api.users import UserAPI
 from app.bot.keyboards.confirm_keyboard import get_confirm_keyboard
 from app.bot.keyboards.menu_keyboard import get_menu_keyboard
 from app.bot.keyboards.speciality_keyboard import get_speciality_keyboard
@@ -15,9 +12,10 @@ from app.bot.messages.commands import START, FIRST_NAME, LAST_NAME, SURNAME, PHO
     SPECIALITY
 from app.bot.messages.errors import INCORRECT_DATA
 from app.bot.states.start_form import StartForm
+from app.bot.utils.create_user import create_user
 from app.bot.utils.replace_apostrophe import replace_apostrophe
-from app.models import User
 from app.repositories.uow import UnitOfWork
+from app.settings import settings
 from app.types.confirms import Confirms
 
 
@@ -76,11 +74,19 @@ async def input_speciality(callback: CallbackQuery, callback_data: SelectSpecial
     await state.set_state(StartForm.dorm)
 
 
-async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext):
+async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork):
     await state.update_data(is_dorm=True if callback_data.confirm == Confirms.YES else False)
     await callback.message.edit_reply_markup()
-    await callback.message.answer(PRINTED_EDBO, reply_markup=get_confirm_keyboard())
-    await state.set_state(StartForm.print_edbo)
+    if not settings.CHECK_EDBO:
+        await callback.message.answer(PRINTED_EDBO, reply_markup=get_confirm_keyboard())
+        await state.set_state(StartForm.print_edbo)
+    else:
+        data = await state.get_data()
+        data["id"] = callback.from_user.id
+        data["username"] = callback.from_user.username
+        await create_user(data, uow)
+        await callback.message.answer(MENU, reply_markup=get_menu_keyboard())
+        await state.clear()
 
 
 async def input_edbo(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork):
@@ -88,12 +94,7 @@ async def input_edbo(callback: CallbackQuery, callback_data: SelectConfirm, stat
     data = await state.get_data()
     data["id"] = callback.from_user.id
     data["username"] = callback.from_user.username
-    user = User(**data)
-    await uow.users.create(user)
-    await uow.flush()
-
-    async with UserAPI() as user_api:
-        await user_api.register_user(RegisterUser.model_validate(user, from_attributes=True))
+    await create_user(data, uow)
 
     await callback.message.edit_reply_markup()
     await callback.message.answer(MENU, reply_markup=get_menu_keyboard())

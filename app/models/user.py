@@ -16,4 +16,4 @@ class User(Base):
     email: Mapped[str]
     speciality: Mapped[str]
     is_dorm: Mapped[bool]
-    printed_edbo: Mapped[bool]
+    printed_edbo: Mapped[Optional[bool]]
