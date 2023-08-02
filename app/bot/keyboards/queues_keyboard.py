@@ -10,7 +10,7 @@ def get_queues_keyboard(queues, my_queues=False) -> InlineKeyboardMarkup:
     for queue in queues:
         builder.button(text=queue["name"], callback_data=SelectQueue(id=queue["id"], is_my=my_queues))
 
-    builder.adjust(2, 1, repeat=True)
+    builder.adjust(2, 1, 1)
     builder.button(text="🔙 Повернутися у меню", callback_data='Menu')
 
     return builder.as_markup()
