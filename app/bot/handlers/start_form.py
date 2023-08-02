@@ -77,7 +77,7 @@ async def input_speciality(callback: CallbackQuery, callback_data: SelectSpecial
 async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork):
     await state.update_data(is_dorm=True if callback_data.confirm == Confirms.YES else False)
     await callback.message.edit_reply_markup()
-    if not settings.CHECK_EDBO:
+    if settings.CHECK_EDBO:
         await callback.message.answer(PRINTED_EDBO, reply_markup=get_confirm_keyboard())
         await state.set_state(StartForm.print_edbo)
     else:

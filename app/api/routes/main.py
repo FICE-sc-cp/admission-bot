@@ -5,6 +5,7 @@ from aiogram.enums.parse_mode import ParseMode
 from fastapi import APIRouter, Depends
 
 from app.api.schemas.broadcast_message import BroadcastMessage
+from app.api.schemas.contract import Contract
 from app.api.stubs import BotStub
 
 main_router = APIRouter(tags=["pryomka"])
@@ -25,3 +26,8 @@ async def broadcast_handler(request: BroadcastMessage, bot: Bot = Depends(BotStu
     asyncio.ensure_future(send())
 
     return {}
+
+
+@main_router.post("/sendContract")
+async def send_document(contract: Contract):
+    ...

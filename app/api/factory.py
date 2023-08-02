@@ -48,7 +48,7 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     app.add_event_handler('shutdown', partial(on_shutdown, bot))
     app.include_router(webhook_router)
 
-    api = APIRouter(prefix="/api/v1", dependencies=[Depends(verify_token)])
+    api = APIRouter(dependencies=[Depends(verify_token)])
 
     api.include_router(main_router)
 
