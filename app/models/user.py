@@ -6,7 +6,7 @@ from app.models import Base
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "queue_users"
 
     first_name: Mapped[str]
     last_name: Mapped[str]
