@@ -7,6 +7,8 @@ from fastapi import APIRouter, Depends
 from app.api.schemas.broadcast_message import BroadcastMessage
 from app.api.schemas.contract import Contract
 from app.api.stubs import BotStub
+from app.messages.api import CONTRACT_INFO
+from app.settings import settings
 
 main_router = APIRouter(tags=["pryomka"])
 
@@ -30,4 +32,9 @@ async def broadcast_handler(request: BroadcastMessage, bot: Bot = Depends(BotStu
 
 @main_router.post("/sendContract")
 async def send_document(contract: Contract, bot: Bot = Depends(BotStub)):
+    await bot.send_message(
+        settings.ADMIN_CHAT_ID,
+        await CONTRACT_INFO.render_async(contract=contract),
+        settings.CONTRACT_THREAD_ID
+    )
     return contract

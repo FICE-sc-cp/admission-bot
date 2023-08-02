@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -9,5 +9,5 @@ class Contract(BaseModel):
     middle_name: Optional[str] = Field(None, validation_alias="middleName")
     speciality: str = Field(validation_alias="specialty")
     contract_number: str = Field(validation_alias="contractNumber")
-    competitive_point: int = Field(validation_alias="competitivePoint")
+    competitive_point: Union[int, float] = Field(validation_alias="competitivePoint")
     date: str
