@@ -10,7 +10,7 @@ CONTRACT_INFO = environment.from_string("""
 
 REGISTER_USER = environment.from_string("""
 <b>ПІБ:</b> {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
-<b>Юзернейм:</b> <a href='tg://user?id={{ user.id }}'>@{{ user.username }}</a>
+<b>Юзернейм:</b> @{{ user.username }} ({{ user.id }})
 <b>Телефон:</b> {{ user.phone }}
 <b>Пошта:</b> {{ user.email }}
 <b>Спеціальність:</b> {{ user.speciality }}
