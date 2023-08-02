@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "admission-bot"
+version = "0.1.0"
+description = ""
+authors = ["Kulunchick <nikolikrasovski@gmail.com>"]
+readme = "README.md"
+packages = [{include = "admission_bot"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiogram = {version = "^3.0.0b9", allow-prereleases = true}
+pydantic = "^2.1.1"
+pydantic-settings = "^2.0.2"
+uvloop = {version = "^0.17.0", platform = "linux"}
+jinja2 = "^3.1.2"
+sqlalchemy = {extras = ["postgresql-asyncpg"], version = "^2.0.19"}
+redis = "^4.6.0"
+fastapi = "^0.100.1"
+uvicorn = "^0.23.2"
+alembic = "^1.11.1"
+phonenumbers = "^8.13.17"
+email-validator = "^2.0.0.post2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

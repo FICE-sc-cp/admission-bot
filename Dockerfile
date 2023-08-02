@@ -1,11 +1,24 @@
-FROM python:3.11-slim
+# python version
+ARG PYTHON_VERSION=3.11
 
-RUN pip install --upgrade pip
+# build stage
+FROM python:${PYTHON_VERSION}-slim AS builder
 
-WORKDIR /app
+ENV PATH /opt/venv/bin:$PATH
+WORKDIR /opt
+RUN python -m venv venv
+RUN pip install poetry
 
-COPY . /app
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-interaction --no-root --only main
 
-RUN pip install -r requirements.txt
+#run stage
+FROM python:${PYTHON_VERSION}-slim
 
-ENTRYPOINT python main.py
+WORKDIR /opt
+COPY --from=builder /opt/venv venv
+ENV PATH /opt/venv/bin:$PATH
+COPY app app
+
+CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "app.main:app"]
