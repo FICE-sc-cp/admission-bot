@@ -11,6 +11,6 @@ class RegisterUser(BaseModel):
     last_name: str = Field(..., serialization_alias="lastName")
     phone: Optional[str] = Field(None, serialization_alias="phone")
     email: str
-    speciality: str
+    speciality: str = Field(..., serialization_alias="specialty")
     is_dorm: bool = Field(..., serialization_alias="isDorm")
     printed_edbo: Optional[bool] = Field(None, serialization_alias="printedEdbo")
