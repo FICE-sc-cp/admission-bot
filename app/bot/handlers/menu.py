@@ -2,7 +2,7 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 
 from app.bot.keyboards.menu_keyboard import get_menu_keyboard
-from app.bot.messages.commands import MENU
+from app.messages.commands import MENU
 
 
 async def menu(callback: CallbackQuery, state: FSMContext):

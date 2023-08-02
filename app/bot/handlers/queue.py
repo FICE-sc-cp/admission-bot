@@ -12,8 +12,8 @@ from app.bot.keyboards.types.leave_queue import LeaveQueue
 from app.bot.keyboards.types.register_queue import RegisterQueue
 from app.bot.keyboards.types.select_queue import SelectQueue
 from app.bot.keyboards.update_queue_keyboard import get_update_queue_keyboard
-from app.bot.messages.commands import SELECT_QUEUE, MY_QUEUES, SEND_GEOLOCATION, YOU_NOT_IN_QUEUE, LEAVE_QUEUE, MENU
-from app.bot.messages.errors import NO_QUEUES, NO_REGISTERED
+from app.messages.commands import SELECT_QUEUE, MY_QUEUES, SEND_GEOLOCATION, YOU_NOT_IN_QUEUE, LEAVE_QUEUE, MENU
+from app.messages.errors import NO_QUEUES, NO_REGISTERED
 from app.bot.states.queue_form import QueueForm
 from app.bot.utils.get_spherical_distance import get_spherical_distance
 from app.models import User

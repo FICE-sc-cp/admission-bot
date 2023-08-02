@@ -1,7 +1,7 @@
 from aiogram.types import Message
 
 from app.bot.keyboards.info_keyboard import get_info_keyboard
-from app.bot.messages.commands import HELP
+from app.messages.commands import HELP
 
 
 async def help_command(message: Message):

@@ -1,5 +1,6 @@
 from aiogram import Router, F
 from aiogram.filters import Command, CommandStart
+from aiogram.enums.chat_type import ChatType
 
 from app.bot.filters.is_registered import IsRegistered
 from app.bot.handlers.help_command import help_command
@@ -8,6 +9,7 @@ from app.bot.handlers.queue import all_queues, my_queues, get_my_queue, get_queu
     location_handler
 from app.bot.handlers.start_form import start_without_registration, input_first_name, input_last_name, \
     input_middle_name, input_phone, input_email, input_dorm, input_edbo, input_speciality
+from app.bot.handlers.thread_info import thread_info
 from app.bot.keyboards.types.leave_queue import LeaveQueue
 from app.bot.keyboards.types.select_confirm import SelectConfirm
 from app.bot.keyboards.types.select_queue import SelectQueue
@@ -44,3 +46,10 @@ queue_router.callback_query.register(confirm_leave_queue, LeaveQueue.filter(F.co
 queue_router.message.register(location_handler, QueueForm.geo, F.location)
 
 router.include_router(queue_router)
+
+group_router = Router()
+group_router.message.filter(F.chat.type.in_({ChatType.GROUP, ChatType.SUPERGROUP}))
+
+group_router.message.register(thread_info, Command("thread_info"), F.reply_to_message.forum_topic_created)
+
+router.include_router(group_router)

@@ -8,9 +8,9 @@ from app.bot.keyboards.menu_keyboard import get_menu_keyboard
 from app.bot.keyboards.speciality_keyboard import get_speciality_keyboard
 from app.bot.keyboards.types.select_confirm import SelectConfirm
 from app.bot.keyboards.types.select_speciality import SelectSpeciality
-from app.bot.messages.commands import START, FIRST_NAME, LAST_NAME, SURNAME, PHONE, EMAIL, DORM, PRINTED_EDBO, MENU, \
+from app.messages.commands import START, FIRST_NAME, LAST_NAME, SURNAME, PHONE, EMAIL, DORM, PRINTED_EDBO, MENU, \
     SPECIALITY
-from app.bot.messages.errors import INCORRECT_DATA
+from app.messages.errors import INCORRECT_DATA
 from app.bot.states.start_form import StartForm
 from app.bot.utils.create_user import create_user
 from app.bot.utils.replace_apostrophe import replace_apostrophe

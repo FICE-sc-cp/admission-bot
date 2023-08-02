@@ -1,3 +1,5 @@
+from app.messages.environment import environment
+
 HELP = """
 Задати питання та знайти інформацію можна тут
 """
@@ -78,3 +80,8 @@ YOU_NOT_IN_QUEUE = """
 LEAVE_QUEUE = """
 Щоб вийти з черги, натисніть "Так"
 """
+
+THREAD_INFO = environment.from_string("""
+ID чата: {{ chat_id }}
+ID гілки: {{ thread_id }}
+""")
