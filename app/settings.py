@@ -30,6 +30,10 @@ class Settings(BaseSettings):
     LAT: float = 50.447322
     LON: float = 30.459321
 
+    ADMIN_CHAT_ID: int = -1001806760894
+    CONTRACT_THREAD_ID: int = 151
+    QUEUE_THREAD_ID: int = 73
+
     @property
     def WEBHOOK_URL(self) -> str:
         return f"{self.WEBHOOK_HOST}{self.WEBHOOK_PATH}"

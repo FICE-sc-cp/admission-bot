@@ -19,6 +19,6 @@ FROM python:${PYTHON_VERSION}-slim
 WORKDIR /opt
 COPY --from=builder /opt/venv venv
 ENV PATH /opt/venv/bin:$PATH
-COPY app app
+COPY . .
 
 CMD ["uvicorn", "--host", "0.0.0.0", "--port", "8000", "app.main:app"]

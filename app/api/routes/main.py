@@ -29,5 +29,5 @@ async def broadcast_handler(request: BroadcastMessage, bot: Bot = Depends(BotStu
 
 
 @main_router.post("/sendContract")
-async def send_document(contract: Contract):
+async def send_document(contract: Contract, bot: Bot = Depends(BotStub)):
     return contract
