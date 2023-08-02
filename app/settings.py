@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: SecretStr
     REDIS_DB: int
 
-    CHECK_EDBO: bool = False
+    CHECK_EDBO: bool = True
     KM_RADIUS: int = 2
     LAT: float = 50.447322
     LON: float = 30.459321

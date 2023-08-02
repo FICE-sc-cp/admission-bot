@@ -7,3 +7,13 @@ CONTRACT_INFO = environment.from_string("""
 <b>Конкурсний бал:</b> {{ contract.competitive_point }}
 <b>Дата:</b> {{ contract.date }}
 """)
+
+REGISTER_USER = environment.from_string("""
+<b>ПІБ:</b> {{ user.last_name }} {{ user.first_name }} {{ user.middle_name }}
+<b>Юзернейм:</b> <a href='tg://user?id={{ user.id }}'>@{{ user.username }}</a>
+<b>Телефон:</b> {{ user.phone }}
+<b>Пошта:</b> {{ user.email }}
+<b>Спеціальність:</b> {{ user.speciality }}
+<b>Гуртожиток:</b> {{ 'Так' if user.is_dorm else 'Ні' }}
+<b>Роздрукував заяву:</b> {{ 'Так' if user.printed_edbo else 'Ні' }}
+""")
