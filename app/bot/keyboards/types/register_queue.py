@@ -1,6 +1,5 @@
 from aiogram.filters.callback_data import CallbackData
 
 
-class SelectQueue(CallbackData, prefix="queue"):
+class RegisterQueue(CallbackData, prefix="register"):
     id: int
-    is_my: bool
