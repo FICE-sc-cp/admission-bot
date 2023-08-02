@@ -83,7 +83,7 @@ async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, stat
         await state.set_state(StartForm.print_edbo)
     else:
         data = await state.get_data()
-        data["id"] = callback.from_user.id
+        data["telegram_id"] = callback.from_user.id
         data["username"] = callback.from_user.username
         await create_user(data, uow, bot)
         await callback.message.answer(MENU, reply_markup=get_menu_keyboard())
@@ -93,7 +93,7 @@ async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, stat
 async def input_edbo(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork, bot: Bot):
     await state.update_data(printed_edbo=True if callback_data.confirm == Confirms.YES else False)
     data = await state.get_data()
-    data["id"] = callback.from_user.id
+    data["telegram_id"] = callback.from_user.id
     data["username"] = callback.from_user.username
     await create_user(data, uow, bot)
 

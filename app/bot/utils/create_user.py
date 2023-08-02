@@ -11,14 +11,15 @@ from app.settings import settings
 
 
 async def create_user(data: Dict[str, Any], uow: UnitOfWork, bot: Bot):
+    async with UserAPI() as user_api:
+        response = await user_api.register_user(RegisterUser.model_validate(data))
+
+    data["id"] = response["user"]["id"]
     user = User(**data)
     await uow.users.create(user)
 
-    async with UserAPI() as user_api:
-        await user_api.register_user(RegisterUser.model_validate(user, from_attributes=True))
-
-    await bot.send_message(
-        settings.ADMIN_CHAT_ID,
-        await REGISTER_USER.render_async(user=user),
-        settings.QUEUE_THREAD_ID
-    )
+    # await bot.send_message(
+    #     settings.ADMIN_CHAT_ID,
+    #     await REGISTER_USER.render_async(user=user),
+    #     settings.QUEUE_THREAD_ID
+    # )

@@ -79,7 +79,7 @@ async def get_queue(callback: CallbackQuery, state: FSMContext, callback_data: S
     else:
         await state.set_state(QueueForm.geo)
         await state.update_data(queue_id=queue_id)
-        return await callback.message.answer(
+        await callback.message.answer(
             SEND_GEOLOCATION,
             reply_markup=get_geo_keyboard())
 
@@ -101,7 +101,7 @@ async def location_handler(message: Message, state: FSMContext):
     data = await state.get_data()
     queue_id = data.get("queue_id", -1)
 
-    if (get_spherical_distance(lat, lon) > settings.RADIUS) or \
+    if (get_spherical_distance(lat, lon) > settings.KM_RADIUS) or \
             (message.forward_from is not None):
         return await message.reply(
             "Помилка! Ви ще не знаходитесь на території КПІ, надішліть геолокацію ще раз, коли будете на місці, чи натисніть \"/start\" щоб повернутись у меню\".",

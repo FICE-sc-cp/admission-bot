@@ -6,11 +6,12 @@ from app.bot.filters.is_registered import IsRegistered
 from app.bot.handlers.help_command import help_command
 from app.bot.handlers.menu import menu, menu_start
 from app.bot.handlers.queue import all_queues, my_queues, get_my_queue, get_queue, leave_queue, confirm_leave_queue, \
-    location_handler
+    location_handler, register_queue
 from app.bot.handlers.start_form import start_without_registration, input_first_name, input_last_name, \
     input_middle_name, input_phone, input_email, input_dorm, input_edbo, input_speciality
 from app.bot.handlers.thread_info import thread_info
 from app.bot.keyboards.types.leave_queue import LeaveQueue
+from app.bot.keyboards.types.register_queue import RegisterQueue
 from app.bot.keyboards.types.select_confirm import SelectConfirm
 from app.bot.keyboards.types.select_queue import SelectQueue
 from app.bot.keyboards.types.select_speciality import SelectSpeciality
@@ -31,7 +32,7 @@ router.callback_query.register(input_speciality, StartForm.speciality, SelectSpe
 router.callback_query.register(input_dorm, StartForm.dorm, SelectConfirm.filter())
 router.callback_query.register(input_edbo, StartForm.print_edbo, SelectConfirm.filter())
 
-router.message.register(menu, F.data == "Menu")
+router.callback_query.register(menu, F.data == "menu")
 router.message.register(menu_start, CommandStart())
 
 queue_router = Router()
@@ -44,6 +45,7 @@ queue_router.callback_query.register(get_queue, SelectQueue.filter(~F.is_my))
 queue_router.callback_query.register(leave_queue, LeaveQueue.filter(~F.confirm))
 queue_router.callback_query.register(confirm_leave_queue, LeaveQueue.filter(F.confirm))
 queue_router.message.register(location_handler, QueueForm.geo, F.location)
+queue_router.callback_query.register(register_queue, RegisterQueue.filter())
 
 router.include_router(queue_router)
 
