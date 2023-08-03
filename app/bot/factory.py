@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from app.bot.handlers import router as main_router
 from app.bot.middlewares.sessionmaker import SessionMaker
+from app.bot.middlewares.throttling import ThrottlingMiddleware
 from app.settings import settings
 from redis import asyncio as aioredis
 from aiogram.fsm.storage.redis import RedisStorage
@@ -40,6 +41,7 @@ def create_dispatcher() -> Dispatcher:
 
     dispatcher.callback_query.middleware(CallbackAnswerMiddleware())
     dispatcher.update.middleware(SessionMaker(sessionmaker))
+    dispatcher.update.middleware(ThrottlingMiddleware())
 
     return dispatcher
 
