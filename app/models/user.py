@@ -9,7 +9,7 @@ from app.models import Base
 class User(Base):
     __tablename__ = "queue_users"
 
-    telegram_id: Mapped[Optional[int]] = mapped_column(BigInteger)
+    telegram_id: Mapped[int] = mapped_column(BigInteger)
     first_name: Mapped[str]
     last_name: Mapped[str]
     surname: Mapped[Optional[str]]
