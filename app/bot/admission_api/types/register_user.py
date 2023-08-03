@@ -7,7 +7,7 @@ class RegisterUser(BaseModel):
     telegram_id: int = Field(..., serialization_alias="telegramId")
     username: Optional[str] = Field(None, serialization_alias="username")
     first_name: str = Field(..., serialization_alias="firstName")
-    middle_name: Optional[str] = Field(None, serialization_alias="middleName")
+    surname: Optional[str] = Field(None, serialization_alias="middleName")
     last_name: str = Field(..., serialization_alias="lastName")
     phone: Optional[str] = Field(None, serialization_alias="phone")
     email: str
