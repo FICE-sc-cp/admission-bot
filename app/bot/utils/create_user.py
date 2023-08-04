@@ -18,8 +18,9 @@ async def create_user(data: Dict[str, Any], uow: UnitOfWork, bot: Bot):
     user = User(**data)
     await uow.users.create(user)
 
-    await bot.send_message(
-        settings.ADMIN_CHAT_ID,
-        await REGISTER_USER.render_async(user=user, message="Реєстрація у боті"),
-        settings.QUEUE_THREAD_ID
-    )
+    if settings.SEND_REGISTER:
+        await bot.send_message(
+            settings.ADMIN_CHAT_ID,
+            await REGISTER_USER.render_async(user=user, message="Реєстрація у боті"),
+            settings.QUEUE_THREAD_ID
+        )

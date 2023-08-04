@@ -1,3 +1,4 @@
+from aiogram import Bot
 from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove, FSInputFile
 from aiogram.fsm.context import FSMContext
 
@@ -12,6 +13,7 @@ from app.bot.keyboards.types.leave_queue import LeaveQueue
 from app.bot.keyboards.types.register_queue import RegisterQueue
 from app.bot.keyboards.types.select_queue import SelectQueue
 from app.bot.keyboards.update_queue_keyboard import get_update_queue_keyboard
+from app.messages.api import REGISTER_USER
 from app.messages.commands import SELECT_QUEUE, MY_QUEUES, SEND_GEOLOCATION, YOU_NOT_IN_QUEUE, LEAVE_QUEUE, MENU
 from app.messages.errors import NO_QUEUES, NO_REGISTERED
 from app.bot.states.queue_form import QueueForm
@@ -115,13 +117,20 @@ async def location_handler(message: Message, state: FSMContext):
                             reply_markup=get_register_queue_keyboard(queue_id))
 
 
-async def register_queue(callback: CallbackQuery, callback_data: RegisterQueue, user: User):
+async def register_queue(callback: CallbackQuery, callback_data: RegisterQueue, user: User, bot: Bot):
     queue_id = callback_data.id
     async with QueueAPI() as queue_api:
         data = await queue_api.add_user_to_queue(queue_id, user.id)
     if "message" in data:
         await callback.answer(data['message'])
         return
+
+    if settings.SEND_REGISTER_IN_QUEUE:
+        await bot.send_message(
+            settings.ADMIN_CHAT_ID,
+            await REGISTER_USER.render_async(user=user, message="Реєстрація у черзі"),
+            settings.QUEUE_THREAD_ID
+        )
 
     await callback.message.answer_photo(FSInputFile(f'q_nums/{data["position"]["code"]}.jpg'),
                                         caption="Ваш ідентифікаційний номер у черзі")
