@@ -18,4 +18,5 @@ class User(Base):
     email: Mapped[str]
     speciality: Mapped[str]
     is_dorm: Mapped[bool]
+    confirm_edbo: Mapped[bool] = mapped_column(server_default="0")
     printed_edbo: Mapped[Optional[bool]]

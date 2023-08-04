@@ -9,4 +9,5 @@ class StartForm(StatesGroup):
     email = State()
     speciality = State()
     dorm = State()
+    confirm_edbo = State()
     print_edbo = State()

@@ -13,7 +13,7 @@ from app.bot.states.start_form import StartForm
 from app.bot.utils.create_user import create_user
 from app.bot.utils.replace_apostrophe import replace_apostrophe
 from app.messages.commands import START, FIRST_NAME, LAST_NAME, SURNAME, PHONE, EMAIL, DORM, PRINTED_EDBO, MENU, \
-    SPECIALITY
+    SPECIALITY, CONFIRM_EDBO
 from app.messages.errors import INCORRECT_DATA
 from app.repositories.uow import UnitOfWork
 from app.settings import settings
@@ -75,8 +75,15 @@ async def input_speciality(callback: CallbackQuery, callback_data: SelectSpecial
     await state.set_state(StartForm.dorm)
 
 
-async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork, bot: Bot):
+async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext):
     await state.update_data(is_dorm=True if callback_data.confirm == Confirms.YES else False)
+    await callback.message.edit_reply_markup()
+    await callback.message.answer(CONFIRM_EDBO, reply_markup=get_confirm_keyboard())
+    await state.set_state(StartForm.confirm_edbo)
+
+
+async def input_confirm_edbo(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork, bot: Bot):
+    await state.update_data(confirm_edbo=True if callback_data.confirm == Confirms.YES else False)
     await callback.message.edit_reply_markup()
     if settings.CHECK_EDBO:
         await callback.message.answer(PRINTED_EDBO, reply_markup=get_confirm_keyboard())

@@ -17,5 +17,6 @@ REGISTER_USER = environment.from_string("""
 <b>Пошта:</b> {{ user.email }}
 <b>Спеціальність:</b> {{ user.speciality }}
 <b>Гуртожиток:</b> {{ 'Так' if user.is_dorm else 'Ні' }}
+<b>Підтвердив місце навчання:</b> {{ 'Так' if user.confirm_edbo else 'Ні' }}
 <b>Роздрукував заяву:</b> {{ 'Так' if user.printed_edbo else 'Ні' }}
 """)

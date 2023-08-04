@@ -9,7 +9,7 @@ from app.bot.handlers.menu import menu, menu_start
 from app.bot.handlers.queue import all_queues, my_queues, get_my_queue, get_queue, leave_queue, confirm_leave_queue, \
     location_handler, register_queue
 from app.bot.handlers.start_form import start_without_registration, input_first_name, input_last_name, \
-    input_middle_name, input_phone, input_email, input_dorm, input_edbo, input_speciality
+    input_middle_name, input_phone, input_email, input_dorm, input_edbo, input_speciality, input_confirm_edbo
 from app.bot.handlers.thread_info import thread_info
 from app.bot.keyboards.types.leave_queue import LeaveQueue
 from app.bot.keyboards.types.register_queue import RegisterQueue
@@ -31,6 +31,7 @@ router.message.register(input_phone, StartForm.phone_number)
 router.message.register(input_email, StartForm.email)
 router.callback_query.register(input_speciality, StartForm.speciality, SelectSpeciality.filter())
 router.callback_query.register(input_dorm, StartForm.dorm, SelectConfirm.filter())
+router.callback_query.register(input_confirm_edbo, StartForm.confirm_edbo, SelectConfirm.filter())
 router.callback_query.register(input_edbo, StartForm.print_edbo, SelectConfirm.filter())
 
 router.callback_query.register(menu, F.data == "menu")

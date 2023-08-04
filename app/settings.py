@@ -27,7 +27,7 @@ class Settings(BaseSettings):
 
     CHECK_EDBO: bool = True
     SEND_REGISTER: bool = False
-    SEND_REGISTER_IN_QUEUE: bool = True
+    SEND_REGISTER_IN_QUEUE: bool = False
     KM_RADIUS: int = 2
     LAT: float = 50.447322
     LON: float = 30.459321
