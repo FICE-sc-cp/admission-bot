@@ -2,6 +2,7 @@ import email_validator
 import phonenumbers
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
+from aiogram import Bot
 
 from app.bot.keyboards.confirm_keyboard import get_confirm_keyboard
 from app.bot.keyboards.menu_keyboard import get_menu_keyboard
@@ -74,7 +75,7 @@ async def input_speciality(callback: CallbackQuery, callback_data: SelectSpecial
     await state.set_state(StartForm.dorm)
 
 
-async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork):
+async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork, bot: Bot):
     await state.update_data(is_dorm=True if callback_data.confirm == Confirms.YES else False)
     await callback.message.edit_reply_markup()
     if settings.CHECK_EDBO:
@@ -84,17 +85,17 @@ async def input_dorm(callback: CallbackQuery, callback_data: SelectConfirm, stat
         data = await state.get_data()
         data["telegram_id"] = callback.from_user.id
         data["username"] = callback.from_user.username
-        await create_user(data, uow)
+        await create_user(data, uow, bot)
         await callback.message.answer(MENU, reply_markup=get_menu_keyboard())
         await state.clear()
 
 
-async def input_edbo(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork):
+async def input_edbo(callback: CallbackQuery, callback_data: SelectConfirm, state: FSMContext, uow: UnitOfWork, bot: Bot):
     await state.update_data(printed_edbo=True if callback_data.confirm == Confirms.YES else False)
     data = await state.get_data()
     data["telegram_id"] = callback.from_user.id
     data["username"] = callback.from_user.username
-    await create_user(data, uow)
+    await create_user(data, uow, bot)
 
     await callback.message.edit_reply_markup()
     await callback.message.answer(MENU, reply_markup=get_menu_keyboard())

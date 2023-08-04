@@ -9,6 +9,8 @@ CONTRACT_INFO = environment.from_string("""
 """)
 
 REGISTER_USER = environment.from_string("""
+{{ message }}
+
 <b>ПІБ:</b> {{ user.last_name }} {{ user.first_name }} {{ user.surname }}
 <b>Юзернейм:</b> @{{ user.username }} ({{ user.telegram_id }})
 <b>Телефон:</b> {{ user.phone }}
