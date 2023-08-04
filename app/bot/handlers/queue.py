@@ -50,10 +50,11 @@ async def get_my_queue(callback: CallbackQuery, callback_data: SelectQueue, user
         user_data = await user_api.get_user_info(user.id)
         queues = user_data['queues']
     queue_id = callback_data.id
-    queue = list(filter(lambda x: queue_id == x['id'], queues))
-    if not queue:
+    queues = list(filter(lambda x: queue_id == x['id'], queues))
+    if not queues:
         await callback.answer(YOU_NOT_IN_QUEUE)
         return
+    queue = queues[0]
 
     if queue['position']['status'] == 'processing':
         await callback.message.edit_text(

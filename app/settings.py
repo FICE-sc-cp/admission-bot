@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     LON: float = 30.459321
 
     ADMIN_CHAT_ID: int = -1001806760894
+    ADMIN_ID: int = 1568892912
     CONTRACT_THREAD_ID: int = 151
     QUEUE_THREAD_ID: int = 73
 

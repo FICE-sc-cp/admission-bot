@@ -11,8 +11,8 @@ CONTRACT_INFO = environment.from_string("""
 REGISTER_USER = environment.from_string("""
 {{ message }}
 
-<b>ПІБ:</b> <code>{{ user.last_name }} {{ user.first_name }} {{ user.surname }}</code>
-<b>Юзернейм:</b> @{{ user.username }} ({{ user.telegram_id }})
+<b>ПІБ:</b> <code>{{ user.last_name }} {{ user.first_name }} {{ user.surname|default('', true) }}</code>
+<b>Юзернейм:</b> {% if user.username %}@{{ user.username }}{% else %}<a href='tg://user?id={{ user.telegram_id }}'>{{ user.first_name }}</a>{% endif %} ({{ user.telegram_id }})
 <b>Телефон:</b> {{ user.phone }}
 <b>Пошта:</b> {{ user.email }}
 <b>Спеціальність:</b> {{ user.speciality }}

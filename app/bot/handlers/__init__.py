@@ -3,6 +3,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.enums.chat_type import ChatType
 
 from app.bot.filters.is_registered import IsRegistered
+from app.bot.handlers.errors import errors
 from app.bot.handlers.help_command import help_command
 from app.bot.handlers.menu import menu, menu_start
 from app.bot.handlers.queue import all_queues, my_queues, get_my_queue, get_queue, leave_queue, confirm_leave_queue, \
@@ -55,3 +56,5 @@ group_router.message.filter(F.chat.type.in_({ChatType.GROUP, ChatType.SUPERGROUP
 group_router.message.register(thread_info, Command("thread_info"), F.reply_to_message.forum_topic_created)
 
 router.include_router(group_router)
+
+router.errors.register(errors)
