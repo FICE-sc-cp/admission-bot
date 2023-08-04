@@ -3,11 +3,13 @@ from functools import partial
 from aiogram import Dispatcher, Bot
 from fastapi import FastAPI, APIRouter, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from app.api.middlewares.authentication import verify_token
 from app.api.routes.main import main_router
 from app.api.routes.webhook import webhook_router
-from app.api.stubs import BotStub, DispatcherStub, SecretStub
+from app.api.stubs import BotStub, DispatcherStub, SecretStub, UOWStub
+from app.bot.utils.create_uow import create_uow
 from app.settings import settings
 
 
@@ -25,7 +27,7 @@ async def on_shutdown(bot: Bot):
     await bot.delete_webhook(drop_pending_updates=True)
 
 
-def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI:
+def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str, sessionmaker: async_sessionmaker[AsyncSession]) -> FastAPI:
     app = FastAPI()
 
     app.dependency_overrides.update(
@@ -33,6 +35,7 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
             BotStub: lambda: bot,
             DispatcherStub: lambda: dispatcher,
             SecretStub: lambda: webhook_secret,
+            UOWStub: partial(create_uow, sessionmaker)
         }
     )
 
