@@ -1,7 +1,7 @@
 from app.messages.environment import environment
 
 CONTRACT_INFO = environment.from_string("""
-<b>ПІБ:</b> {{ contract.last_name }} {{ contract.first_name }} {{ contract.middle_name|default('', true) }}
+<b>ПІБ:</b> <code>{{ contract.last_name }} {{ contract.first_name }} {{ contract.middle_name|default('', true) }}</code>
 <b>Спеціальність:</b> {{ contract.speciality|default('', true) }}
 <b>Номер контракту:</b> {{ contract.contract_number|default('', true) }}
 <b>Конкурсний бал:</b> {{ contract.competitive_point|default('', true) }}
