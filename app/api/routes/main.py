@@ -49,9 +49,12 @@ async def send_document(contract: Contract, bot: Bot = Depends(BotStub)):
 async def send_going_user(user_id: Annotated[int, Query(alias="id")], uow: UnitOfWork = Depends(UOWStub),
                           bot: Bot = Depends(BotStub)):
     user = await uow.users.get_by_id(user_id)
-    await bot.send_message(
-        settings.ADMIN_CHAT_ID,
-        await REGISTER_USER.render_async(user=user, message="Вступник заходить у корпус"),
-        settings.QUEUE_THREAD_ID
-    )
-    return RegisterUser.model_validate(user, from_attributes=True)
+    if user:
+        await bot.send_message(
+            settings.ADMIN_CHAT_ID,
+            await REGISTER_USER.render_async(user=user, message="Вступник заходить у корпус"),
+            settings.QUEUE_THREAD_ID
+        )
+        return RegisterUser.model_validate(user, from_attributes=True)
+    else:
+        return {}

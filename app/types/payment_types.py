@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class PaymentTypes(str, Enum):
-    YEAR = "Щорічно"
+    YEAR = "Щороку"
     SEMESTER = "Щосеместрово"
