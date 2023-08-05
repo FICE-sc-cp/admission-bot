@@ -1,6 +1,6 @@
 from aiogram import Bot
-from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove, FSInputFile
 from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery, Message, ReplyKeyboardRemove, FSInputFile
 
 from app.bot.admission_api.queue import QueueAPI
 from app.bot.admission_api.users import UserAPI
@@ -13,11 +13,11 @@ from app.bot.keyboards.types.leave_queue import LeaveQueue
 from app.bot.keyboards.types.register_queue import RegisterQueue
 from app.bot.keyboards.types.select_queue import SelectQueue
 from app.bot.keyboards.update_queue_keyboard import get_update_queue_keyboard
+from app.bot.states.queue_form import QueueForm
+from app.bot.utils.get_spherical_distance import get_spherical_distance
 from app.messages.api import REGISTER_USER
 from app.messages.commands import SELECT_QUEUE, MY_QUEUES, SEND_GEOLOCATION, YOU_NOT_IN_QUEUE, LEAVE_QUEUE, MENU
 from app.messages.errors import NO_QUEUES, NO_REGISTERED
-from app.bot.states.queue_form import QueueForm
-from app.bot.utils.get_spherical_distance import get_spherical_distance
 from app.models import User
 from app.settings import settings
 
@@ -56,19 +56,23 @@ async def get_my_queue(callback: CallbackQuery, callback_data: SelectQueue, user
         return
     queue = queues[0]
 
-    if queue['position']['status'] == 'processing':
-        await callback.message.edit_text(
-            "<b>{queue_name}</b>\nВаша заявка оброблюється оператором, можете заходити до корпусу.".format(
-                queue_name=queue['name']),
-            reply_markup=get_update_queue_keyboard(queue_id))
+    text = callback.message.html_text
+    if queue['position']['status'] == 'PROCESSING':
+        text = "<b>{queue_name}</b>\nВаша заявка оброблюється оператором, можете заходити до корпусу.".format(
+            queue_name=queue['name'])
 
-    elif queue['position']['status'] == 'waiting':
+    elif queue['position']['status'] == 'WAITING':
+        text = "<b>{queue_name}</b>\nВаша позиція у черзі: {pos}\nВаш ідентифікаційний номер у черзі: {abs_pos}".format(
+            queue_name=queue['name'],
+            pos=queue['position']['relativePosition'],
+            abs_pos=queue['position']['code'])
+
+    if text != callback.message.html_text:
         await callback.message.edit_text(
-            "<b>{queue_name}</b>\nВаша позиція у черзі: {pos}\nВаш ідентифікаційний номер у черзі: {abs_pos}".format(
-                queue_name=queue['name'],
-                pos=queue['position']['relativePosition'],
-                abs_pos=queue['position']['code']),
+            text,
             reply_markup=get_update_queue_keyboard(queue_id))
+    else:
+        await callback.answer("Нічого не змінилось :)")
 
 
 async def get_queue(callback: CallbackQuery, state: FSMContext, callback_data: SelectQueue, user: User):
