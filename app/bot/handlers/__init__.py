@@ -9,13 +9,17 @@ from app.bot.handlers.menu import menu, menu_start
 from app.bot.handlers.queue import all_queues, my_queues, get_my_queue, get_queue, leave_queue, confirm_leave_queue, \
     location_handler, register_queue
 from app.bot.handlers.start_form import start_without_registration, input_first_name, input_last_name, \
-    input_middle_name, input_phone, input_email, input_dorm, input_edbo, input_speciality, input_confirm_edbo
+    input_middle_name, input_phone, input_email, input_dorm, input_edbo, input_speciality, input_confirm_edbo, \
+    input_study_type, input_study_form, input_payment_type
 from app.bot.handlers.thread_info import thread_info
 from app.bot.keyboards.types.leave_queue import LeaveQueue
 from app.bot.keyboards.types.register_queue import RegisterQueue
 from app.bot.keyboards.types.select_confirm import SelectConfirm
+from app.bot.keyboards.types.select_form import SelectForm
+from app.bot.keyboards.types.select_payment import SelectPayment
 from app.bot.keyboards.types.select_queue import SelectQueue
 from app.bot.keyboards.types.select_speciality import SelectSpeciality
+from app.bot.keyboards.types.select_type import SelectType
 from app.bot.states.queue_form import QueueForm
 from app.bot.states.start_form import StartForm
 
@@ -30,6 +34,9 @@ router.message.register(input_middle_name, StartForm.middle_name)
 router.message.register(input_phone, StartForm.phone_number)
 router.message.register(input_email, StartForm.email)
 router.callback_query.register(input_speciality, StartForm.speciality, SelectSpeciality.filter())
+router.callback_query.register(input_study_type, StartForm.study_type, SelectType.filter())
+router.callback_query.register(input_payment_type, StartForm.payment_type, SelectPayment.filter())
+router.callback_query.register(input_study_form, StartForm.study_form, SelectForm.filter())
 router.callback_query.register(input_dorm, StartForm.dorm, SelectConfirm.filter())
 router.callback_query.register(input_confirm_edbo, StartForm.confirm_edbo, SelectConfirm.filter())
 router.callback_query.register(input_edbo, StartForm.print_edbo, SelectConfirm.filter())

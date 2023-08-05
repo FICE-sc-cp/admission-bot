@@ -6,18 +6,25 @@ from aiogram import Bot
 
 from app.bot.keyboards.confirm_keyboard import get_confirm_keyboard
 from app.bot.keyboards.menu_keyboard import get_menu_keyboard
+from app.bot.keyboards.payment_type_keyboard import get_payment_type_keyboard
 from app.bot.keyboards.speciality_keyboard import get_speciality_keyboard
+from app.bot.keyboards.study_form_keyboard import get_study_form_keyboard
+from app.bot.keyboards.study_type_keyboard import get_study_type_keyboard
 from app.bot.keyboards.types.select_confirm import SelectConfirm
+from app.bot.keyboards.types.select_form import SelectForm
+from app.bot.keyboards.types.select_payment import SelectPayment
 from app.bot.keyboards.types.select_speciality import SelectSpeciality
+from app.bot.keyboards.types.select_type import SelectType
 from app.bot.states.start_form import StartForm
 from app.bot.utils.create_user import create_user
 from app.bot.utils.replace_apostrophe import replace_apostrophe
 from app.messages.commands import START, FIRST_NAME, LAST_NAME, SURNAME, PHONE, EMAIL, DORM, PRINTED_EDBO, MENU, \
-    SPECIALITY, CONFIRM_EDBO
+    SPECIALITY, CONFIRM_EDBO, STUDY_TYPE, STUDY_FORM, PAYMENT_TYPE
 from app.messages.errors import INCORRECT_DATA
 from app.repositories.uow import UnitOfWork
 from app.settings import settings
 from app.types.confirms import Confirms
+from app.types.study_types import StudyTypes
 
 
 async def start_without_registration(message: Message, state: FSMContext):
@@ -70,6 +77,31 @@ async def input_email(message: Message, state: FSMContext):
 
 async def input_speciality(callback: CallbackQuery, callback_data: SelectSpeciality, state: FSMContext):
     await state.update_data(speciality=callback_data.speciality)
+    await callback.message.edit_reply_markup()
+    await callback.message.answer(STUDY_TYPE, reply_markup=get_study_type_keyboard())
+    await state.set_state(StartForm.study_type)
+
+
+async def input_study_type(callback: CallbackQuery, callback_data: SelectType, state: FSMContext):
+    await state.update_data(study_type=callback_data.type)
+    await callback.message.edit_reply_markup()
+    if callback_data.type == StudyTypes.BUDGET:
+        await callback.message.answer(STUDY_FORM, reply_markup=get_study_form_keyboard())
+        await state.set_state(StartForm.study_form)
+    else:
+        await callback.message.answer(PAYMENT_TYPE, reply_markup=get_payment_type_keyboard())
+        await state.set_state(StartForm.payment_type)
+
+
+async def input_payment_type(callback: CallbackQuery, callback_data: SelectPayment, state: FSMContext):
+    await state.update_data(payment_type=callback_data.payment)
+    await callback.message.edit_reply_markup()
+    await callback.message.answer(STUDY_FORM, reply_markup=get_study_form_keyboard())
+    await state.set_state(StartForm.study_form)
+
+
+async def input_study_form(callback: CallbackQuery, callback_data: SelectForm, state: FSMContext):
+    await state.update_data(study_form=callback_data.form)
     await callback.message.edit_reply_markup()
     await callback.message.answer(DORM, reply_markup=get_confirm_keyboard())
     await state.set_state(StartForm.dorm)

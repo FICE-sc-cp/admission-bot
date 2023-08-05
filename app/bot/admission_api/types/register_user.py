@@ -12,5 +12,8 @@ class RegisterUser(BaseModel):
     phone: Optional[str] = Field(None, serialization_alias="phone")
     email: str
     speciality: str = Field(..., serialization_alias="specialty")
+    study_type: str = Field(..., serialization_alias="studyType")
+    payment_type: Optional[str] = Field(None, serialization_alias="paymentType")
+    study_form: str = Field(..., serialization_alias="studyForm")
     is_dorm: bool = Field(..., serialization_alias="isDorm")
     printed_edbo: Optional[bool] = Field(None, serialization_alias="printedEdbo")
