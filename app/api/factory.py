@@ -14,13 +14,12 @@ from app.settings import settings
 
 
 async def on_startup(bot: Bot):
-    webhook_info = await bot.get_webhook_info()
-    if webhook_info != settings.WEBHOOK_URL:
-        await bot.set_webhook(
-            settings.WEBHOOK_URL,
-            drop_pending_updates=True,
-            secret_token=settings.TELEGRAM_SECRET.get_secret_value()
-        )
+    await bot.delete_webhook(drop_pending_updates=True)
+    await bot.set_webhook(
+        settings.WEBHOOK_URL,
+        drop_pending_updates=True,
+        secret_token=settings.TELEGRAM_SECRET.get_secret_value()
+    )
 
 
 async def on_shutdown(bot: Bot):
