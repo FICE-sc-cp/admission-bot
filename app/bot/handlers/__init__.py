@@ -8,6 +8,7 @@ from app.bot.handlers.help_command import help_command
 from app.bot.handlers.menu import menu, menu_start
 from app.bot.handlers.queue import all_queues, my_queues, get_my_queue, get_queue, leave_queue, confirm_leave_queue, \
     location_handler, register_queue
+from app.bot.handlers.reset_user import reset_user
 from app.bot.handlers.start_form import start_without_registration, input_first_name, input_last_name, \
     input_middle_name, input_phone, input_email, input_dorm, input_edbo, input_speciality, input_confirm_edbo, \
     input_study_type, input_study_form, input_payment_type
@@ -46,6 +47,9 @@ router.message.register(menu_start, CommandStart())
 
 queue_router = Router()
 queue_router.callback_query.filter(IsRegistered())
+queue_router.message.filter(IsRegistered())
+
+queue_router.message.register(reset_user, Command("reset"))
 
 queue_router.callback_query.register(all_queues, F.data == "AllQueues")
 queue_router.callback_query.register(my_queues, F.data == "MyQueues")
