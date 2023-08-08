@@ -18,7 +18,8 @@ REGISTER_USER = environment.from_string("""
 <b>Спеціальність:</b> {{ user.speciality }}
 <b>Бюджет/Контракт:</b> {{ user.study_type }}
 <b>Форма навчання:</b> {{ user.study_form }}
-{% if user.payment_type %}<b>Тип оплати:</b> {{ user.payment_type }}{% endif %}
+{% if user.payment_type %}<b>Тип оплати:</b> {{ user.payment_type }}
+{% endif %}
 <b>Гуртожиток:</b> {{ 'Так' if user.is_dorm else 'Ні' }}
 <b>Підтвердив місце навчання:</b> {{ 'Так' if user.confirm_edbo else 'Ні' }}
 <b>Роздрукував заяву:</b> {{ 'Так' if user.printed_edbo else 'Ні' }}
