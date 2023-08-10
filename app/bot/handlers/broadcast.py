@@ -1,3 +1,5 @@
+from asyncio import sleep
+
 from aiogram import Bot
 from aiogram.types import Message
 
@@ -12,3 +14,4 @@ async def broadcast(message: Message, uow: UnitOfWork, bot: Bot):
             await bot.send_message(user.telegram_id, BROADCAST)
         except:
             await message.answer(f"{user.last_name} {user.first_name} {user.surname}")
+        await sleep(0.1)
