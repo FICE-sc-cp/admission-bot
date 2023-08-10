@@ -3,6 +3,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.enums.chat_type import ChatType
 
 from app.bot.filters.is_registered import IsRegistered
+from app.bot.handlers.broadcast import broadcast
 from app.bot.handlers.errors import errors
 from app.bot.handlers.help_command import help_command
 from app.bot.handlers.menu import menu, menu_start
@@ -23,6 +24,7 @@ from app.bot.keyboards.types.select_speciality import SelectSpeciality
 from app.bot.keyboards.types.select_type import SelectType
 from app.bot.states.queue_form import QueueForm
 from app.bot.states.start_form import StartForm
+from app.settings import settings
 
 router = Router()
 
@@ -70,3 +72,5 @@ group_router.message.register(thread_info, Command("thread_info"), F.reply_to_me
 router.include_router(group_router)
 
 router.errors.register(errors)
+
+router.message.register(broadcast, Command("broadcast"), F.from_user.id == settings.ADMIN_ID)
