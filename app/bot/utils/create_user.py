@@ -15,6 +15,7 @@ async def create_user(data: Dict[str, Any], uow: UnitOfWork, bot: Bot):
         response = await user_api.register_user(RegisterUser.model_validate(data))
 
     data["id"] = response["user"]["id"]
+    data.pop('specialities', '')
     user = User(**data)
     await uow.users.create(user)
 

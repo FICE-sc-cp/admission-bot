@@ -69,14 +69,33 @@ async def input_email(message: Message, state: FSMContext):
     try:
         email = email_validator.validate_email(message.text)
         await state.update_data(email=email.normalized)
-        await message.answer(SPECIALITY, reply_markup=get_speciality_keyboard())
+        await message.answer(SPECIALITY, reply_markup=get_speciality_keyboard([]))
         await state.set_state(StartForm.speciality)
     except email_validator.EmailNotValidError:
         await message.answer(INCORRECT_DATA)
 
 
 async def input_speciality(callback: CallbackQuery, callback_data: SelectSpeciality, state: FSMContext):
-    await state.update_data(speciality=callback_data.speciality)
+    data = await state.get_data()
+    specialities = data.get("specialities", [])
+    specialty = callback_data.speciality
+    if specialty not in specialities:
+        specialities.append(specialty)
+    else:
+        specialities.remove(specialty)
+    await state.update_data(specialities=specialities)
+
+    await callback.message.edit_text(SPECIALITY, reply_markup=get_speciality_keyboard(specialities))
+
+
+async def confirm_specialty(callback: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    specialities = data.get("specialities", [])
+    if not specialities:
+        await callback.answer("Ви не обрали спеціальність")
+        return
+
+    await state.update_data(speciality=', '.join(specialities))
     await callback.message.edit_reply_markup()
     await callback.message.answer(STUDY_TYPE, reply_markup=get_study_type_keyboard())
     await state.set_state(StartForm.study_type)
