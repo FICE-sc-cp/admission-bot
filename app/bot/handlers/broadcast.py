@@ -7,10 +7,11 @@ from sqlalchemy import select, func
 from app.messages.commands import BROADCAST, BROADCAST_CONTRACT
 from app.models import User
 from app.repositories.uow import UnitOfWork
+from app.repositories.user import UserFilter
 
 
 async def broadcast(message: Message, uow: UnitOfWork, bot: Bot):
-    users = await uow.users.get()
+    users = await uow.users.find(UserFilter(study_type="Контракт"))
     for user in users:
         try:
             await bot.send_message(user.telegram_id, BROADCAST)

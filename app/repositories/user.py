@@ -11,6 +11,7 @@ class UserFilter(BaseModel):
     last_name: Optional[str] = None
     surname: Optional[str] = None
     telegram_id: Optional[int] = None
+    study_type: Optional[str] = None
 
 
 class UserRepository(BaseRepository[User, UserFilter]):
