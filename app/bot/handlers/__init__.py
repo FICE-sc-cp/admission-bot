@@ -3,7 +3,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.enums.chat_type import ChatType
 
 from app.bot.filters.is_registered import IsRegistered
-from app.bot.handlers.broadcast import broadcast
+from app.bot.handlers.broadcast import broadcast, broadcast_contract
 from app.bot.handlers.errors import errors
 from app.bot.handlers.help_command import help_command
 from app.bot.handlers.menu import menu, menu_start
@@ -75,3 +75,4 @@ router.include_router(group_router)
 router.errors.register(errors)
 
 router.message.register(broadcast, Command("broadcast"), F.from_user.id == settings.ADMIN_ID)
+router.message.register(broadcast_contract, Command("broadcast_contract"), F.from_user.id == settings.ADMIN_ID)

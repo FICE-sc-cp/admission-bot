@@ -21,6 +21,9 @@ class UnitOfWork:
     async def __aexit__(self, *args):
         ...
 
+    def get_session(self):
+        return self._session
+
     async def commit(self):
         await self._session.commit()
 
