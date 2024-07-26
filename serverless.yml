@@ -1,0 +1,44 @@
+org: admissionbot
+app: admission-bot
+service: serverless-fastapi
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: ${opt:stage, "dev"}
+
+package:
+  exclude:
+    - Makefile
+    - poetry.lock
+    - README.md
+    - tests/**
+    - docs/**
+    - node_modules/**
+    - .venv/**
+    - .serverless/**
+    - package.json
+    - package-lock.json
+    - .pytest_cache
+    - .hypothesis
+
+custom:
+  pythonRequirements:
+    fileName: requirements.lock
+    useDownloadCache: false
+    useStaticCache: false
+    dockerizePip: true
+
+functions:
+  api:
+    handler: app.main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: any
+          path: /{proxy+}

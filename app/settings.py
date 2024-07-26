@@ -6,24 +6,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     BOT_TOKEN: SecretStr
-    AAPI_HOST: str
-    AAPI_TOKEN: SecretStr
+    API_HOST: str
+    API_TOKEN: SecretStr
 
     WEBHOOK_HOST: str
     WEBHOOK_PATH: str = "/webhook"
     TELEGRAM_SECRET: SecretStr = "mysecretpassword"
-
-    POSTGRES_HOST: str
-    POSTGRES_PORT: Optional[int] = None
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: SecretStr
-    POSTGRES_DB: str
-
-    REDIS_HOST: str
-    REDIS_PORT: int
-    REDIS_USERNAME: str
-    REDIS_PASSWORD: SecretStr
-    REDIS_DB: int
 
     CHECK_EDBO: bool = True
     SEND_REGISTER: bool = False

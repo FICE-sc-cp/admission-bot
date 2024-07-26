@@ -8,7 +8,3 @@ class DispatcherStub:
 
 class SecretStub:
     pass
-
-
-class UOWStub:
-    pass

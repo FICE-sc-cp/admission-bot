@@ -1,19 +1,16 @@
 import asyncio
-from typing import Annotated
 
 from aiogram import Bot
 from aiogram.enums.parse_mode import ParseMode
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends
 
 from app.api.schemas.broadcast_message import BroadcastMessage
 from app.api.schemas.contract import Contract
-from app.api.stubs import BotStub, UOWStub
-from app.bot.admission_api.types.register_user import RegisterUser
-from app.messages.api import CONTRACT_INFO, REGISTER_USER
-from app.repositories.uow import UnitOfWork
+from app.api.stubs import BotStub
+from app.messages.api import CONTRACT_INFO
 from app.settings import settings
 
-main_router = APIRouter(tags=["pryomka"])
+main_router = APIRouter(tags=["admission"])
 
 
 @main_router.post('/sendMessage')
@@ -43,18 +40,3 @@ async def send_document(contract: Contract, bot: Bot = Depends(BotStub)):
         settings.CONTRACT_THREAD_ID
     )
     return contract
-
-
-@main_router.get("/sendGoingUser")
-async def send_going_user(user_id: Annotated[int, Query(alias="id")], uow: UnitOfWork = Depends(UOWStub),
-                          bot: Bot = Depends(BotStub)):
-    user = await uow.users.get_by_id(user_id)
-    if user:
-        await bot.send_message(
-            settings.ADMIN_CHAT_ID,
-            await REGISTER_USER.render_async(user=user, message="Вступник заходить у корпус"),
-            settings.QUEUE_THREAD_ID
-        )
-        return RegisterUser.model_validate(user, from_attributes=True)
-    else:
-        return {}
