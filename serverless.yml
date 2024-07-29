@@ -34,8 +34,7 @@ package:
 custom:
   pythonRequirements:
     fileName: requirements.lock
-    slim: false
-    dockerizePip: 'non-linux'
+    dockerizePip: true
     layer:
       name: serverless-fastapi-deps
       description: Dependencies of serverless-fastapi
