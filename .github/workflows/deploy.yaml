@@ -26,17 +26,25 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Install serverless
+        run: |
+          npm install serverless@3.x
+          npx serverless plugin install --name serverless-python-requirements
       - name: Install Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      - name: Install the project dependencies
-        shell: bash
-        run: pip install -r requirements.lock
-      - name: Install Plugin and Deploy
-        uses: serverless/github-action@v3.2
+      - uses: yezz123/setup-uv@v4
         with:
-          args: -c "serverless plugin install --name serverless-python-requirements && serverless deploy"
-          entrypoint: /bin/sh
+          uv-venv: ".venv"
+      - uses: actions/cache@v3
+        name: Define a cache for the virtual environment based on the dependencies lock file
+        with:
+          path: ./.venv
+          key: venv-${{ hashFiles('requirements.lock') }}
+      - name: Install the project dependencies
+        run: uv pip install -r requirements.lock
+      - name: Install Plugin and Deploy
+        run: npx serverless deploy
         env:
           SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}

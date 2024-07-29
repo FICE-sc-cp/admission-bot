@@ -7,8 +7,14 @@ plugins:
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.11
   stage: ${opt:stage, "dev"}
+  environment:
+    BOT_TOKEN: ${param:BOT_TOKEN}
+    API_HOST: ${param:API_HOST}
+    API_TOKEN: ${param:API_TOKEN}
+
+    WEBHOOK_HOST: ${param:WEBHOOK_HOST}
 
 package:
   exclude:
@@ -28,13 +34,19 @@ package:
 custom:
   pythonRequirements:
     fileName: requirements.lock
-    useDownloadCache: false
-    useStaticCache: false
-    dockerizePip: true
+    slim: false
+    dockerizePip: 'non-linux'
+    layer:
+      name: serverless-fastapi-deps
+      description: Dependencies of serverless-fastapi
+      compatibleRuntimes:
+        - python3.11
 
 functions:
   api:
     handler: app.main.handler
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
     events:
       - http:
           method: ANY

@@ -12,20 +12,20 @@ from app.settings import settings
 
 
 async def on_startup(bot: Bot):
-    await bot.delete_webhook(drop_pending_updates=True)
-    await bot.set_webhook(
-        settings.WEBHOOK_URL,
-        drop_pending_updates=True,
-        secret_token=settings.TELEGRAM_SECRET.get_secret_value()
-    )
-
-
-async def on_shutdown(bot: Bot):
-    await bot.delete_webhook(drop_pending_updates=True)
+    if (await bot.get_webhook_info()).url != settings.WEBHOOK_URL:
+        await bot.delete_webhook(drop_pending_updates=True)
+        await bot.set_webhook(
+            settings.WEBHOOK_URL,
+            drop_pending_updates=True,
+            secret_token=settings.TELEGRAM_SECRET.get_secret_value()
+        )
 
 
 def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI:
-    app = FastAPI()
+    app = FastAPI(
+        root_path="/dev",
+        openapi_url='/openapi.json'
+    )
 
     app.dependency_overrides.update(
         {
@@ -44,7 +44,6 @@ def create_app(bot: Bot, dispatcher: Dispatcher, webhook_secret: str) -> FastAPI
     )
 
     app.add_event_handler('startup', partial(on_startup, bot))
-    app.add_event_handler('shutdown', partial(on_shutdown, bot))
     app.include_router(webhook_router)
 
     api = APIRouter(dependencies=[Depends(verify_token)])

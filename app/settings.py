@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -20,10 +18,11 @@ class Settings(BaseSettings):
     LAT: float = 50.447322
     LON: float = 30.459321
 
-    ADMIN_CHAT_ID: int = -1001806760894
+    ADMIN_CHAT_ID: int = -1002025865539
     ADMIN_ID: int = 1568892912
-    CONTRACT_THREAD_ID: int = 151
-    QUEUE_THREAD_ID: int = 73
+    CONTRACT_THREAD_ID: int = 688
+    QUEUE_THREAD_ID: int = 921
+    GOING_THREAD_ID: int = 680
 
     @property
     def WEBHOOK_URL(self) -> str:

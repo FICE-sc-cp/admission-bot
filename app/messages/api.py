@@ -9,18 +9,24 @@ CONTRACT_INFO = environment.from_string("""
 """)
 
 REGISTER_USER = environment.from_string("""
-{{ message }}
+Зареєтровано нового користувача
 
-<b>ПІБ:</b> <code>{{ user.last_name }} {{ user.first_name }} {{ user.surname|default('', true) }}</code>
-<b>Юзернейм:</b> {% if user.username %}@{{ user.username }}{% else %}<a href='tg://user?id={{ user.telegram_id }}'>{{ user.first_name }}</a>{% endif %} ({{ user.telegram_id }})
-<b>Телефон:</b> {{ user.phone }}
-<b>Пошта:</b> {{ user.email }}
-<b>Спеціальність:</b> {{ user.speciality }}
-<b>Бюджет/Контракт:</b> {{ user.study_type }}
-<b>Форма навчання:</b> {{ user.study_form }}
-{% if user.payment_type %}<b>Тип оплати:</b> {{ user.payment_type }}
-{% endif %}
-<b>Гуртожиток:</b> {{ 'Так' if user.is_dorm else 'Ні' }}
-<b>Підтвердив місце навчання:</b> {{ 'Так' if user.confirm_edbo else 'Ні' }}
-<b>Роздрукував заяву:</b> {{ 'Так' if user.printed_edbo else 'Ні' }}
+<b>ПІБ:</b> <code>{{ user.last_name }} {{ user.first_name }} {{ user.middle_name|default('', true) }}</code>
+<b>Телефон:</b> <code>{{ user.phone }}</code>
+<b>Пошта:</b> <code>{{ user.email }}</code>
+<b>Спеціальність:</b> <code>{{ user.expected_specialities }}</code>
+<b>Гуртожиток:</b> <code>{{ 'Так' if user.is_dorm else 'Ні' }}</code>
+<b>Роздрукував заяву:</b> <code>{{ 'Так' if user.printed_edbo else 'Ні' }}</code>
+""")
+
+GOING_USER = environment.from_string("""
+Користувач зайшов у корпус
+
+<b>ПІБ:</b> <code>{{ user.last_name }} {{ user.first_name }} {{ user.middle_name|default('', true) }}</code>
+<b>Телефон:</b> <code>{{ user.phone }}</code>
+<b>Пошта:</b> <code>{{ user.email }}</code>
+<b>Спеціальність:</b> <code>{{ user.expected_specialities }}</code>
+<b>Гуртожиток:</b> <code>{{ 'Так' if user.is_dorm else 'Ні' }}</code>
+<b>Роздрукував заяву:</b> <code>{{ 'Так' if user.printed_edbo else 'Ні' }}</code>
+
 """)

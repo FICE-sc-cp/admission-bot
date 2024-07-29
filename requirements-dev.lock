@@ -11,23 +11,22 @@
 aiofiles==23.2.1
     # via aiogram
 aiogram==3.10.0
+    # via aiogram-dialog
+aiogram-dialog==2.1.0
 aiohttp==3.9.5
     # via aiogram
 aiosignal==1.3.1
     # via aiohttp
-alembic==1.13.2
 annotated-types==0.7.0
     # via pydantic
 anyio==4.4.0
     # via httpx
     # via starlette
     # via watchfiles
-async-timeout==4.0.3
-    # via asyncpg
-asyncpg==0.29.0
 attrs==23.2.0
     # via aiohttp
-cachetools==5.4.0
+cachetools==5.3.3
+    # via aiogram-dialog
 certifi==2024.7.4
     # via aiogram
     # via httpcore
@@ -42,14 +41,12 @@ dnspython==2.6.1
     # via email-validator
 email-validator==2.2.0
     # via fastapi
-fastapi==0.111.1
+fastapi==0.111.0
 fastapi-cli==0.0.4
     # via fastapi
 frozenlist==1.4.1
     # via aiohttp
     # via aiosignal
-greenlet==3.0.3
-    # via sqlalchemy
 h11==0.14.0
     # via httpcore
     # via uvicorn
@@ -65,27 +62,28 @@ idna==3.7
     # via httpx
     # via yarl
 jinja2==3.1.4
+    # via aiogram-dialog
     # via fastapi
 magic-filter==1.0.12
     # via aiogram
-mako==1.3.5
-    # via alembic
+    # via aiogram-dialog
 mangum==0.17.0
 markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.5
     # via jinja2
-    # via mako
 mdurl==0.1.2
     # via markdown-it-py
 multidict==6.0.5
     # via aiohttp
     # via yarl
-pydantic==2.8.2
+orjson==3.10.6
+    # via fastapi
+pydantic==2.7.4
     # via aiogram
     # via fastapi
     # via pydantic-settings
-pydantic-core==2.20.1
+pydantic-core==2.18.4
     # via pydantic
 pydantic-settings==2.3.4
 pygments==2.18.0
@@ -104,22 +102,20 @@ shellingham==1.5.4
 sniffio==1.3.1
     # via anyio
     # via httpx
-sqlalchemy==2.0.31
-    # via alembic
 starlette==0.37.2
     # via fastapi
 typer==0.12.3
     # via fastapi-cli
 typing-extensions==4.12.2
     # via aiogram
-    # via alembic
     # via fastapi
     # via mangum
     # via pydantic
     # via pydantic-core
-    # via sqlalchemy
     # via typer
-uvicorn==0.30.3
+ujson==5.10.0
+    # via fastapi
+uvicorn==0.30.1
     # via fastapi
 watchfiles==0.22.0
     # via uvicorn
