@@ -6,7 +6,7 @@ from aiogram.enums import ContentType
 from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.widgets.input import MessageInput
-from aiogram_dialog.widgets.kbd import Select, RequestLocation, RequestContact, Next, Button
+from aiogram_dialog.widgets.kbd import Select, RequestLocation, RequestContact, Next, Button, Row, SwitchTo
 from aiogram_dialog.widgets.kbd.select import OnItemClick, Radio, Multiselect
 from aiogram_dialog.widgets.text import Const, Format
 
@@ -28,13 +28,11 @@ class OnSelectEdbo(OnItemClick[Any, Confirms]):
 
 
 async def specialty_handler(event: CallbackQuery, button: Button, dialog_manager: DialogManager) -> None:
-    specialties = dialog_manager.find("specialty").get_checked()
-    dialog_manager.dialog_data["specialties"] = specialties
-    print(specialties)
-    if len(specialties) == 0:
+    specialities = dialog_manager.find("specialty").get_checked()
+    if len(specialities) == 0:
         await event.answer("Оберіть хочаб одну спеціальність")
     else:
-        print("NEXT")
+        dialog_manager.dialog_data["specialities"] = ", ".join(specialities)
         await dialog_manager.switch_to(Form.contact)
 
 
@@ -43,7 +41,8 @@ async def email_handler(message: Message, message_input: MessageInput, manager: 
         validate_email(message.text)
     except EmailNotValidError as e:
         await message.answer("Неправильно введена пошта. Спробуйте ще раз")
-    await manager.next()
+    else:
+        await manager.next()
 
 
 async def location_handler(message: Message, message_input: MessageInput, manager: DialogManager) -> None:
@@ -52,9 +51,23 @@ async def location_handler(message: Message, message_input: MessageInput, manage
 
 
 async def contact_handler(message: Message, message_input: MessageInput, manager: DialogManager) -> None:
-    print(message.contact)
+    manager.dialog_data["phone"] = message.contact.phone_number
     await manager.next()
 
+
+async def get_data(dialog_manager: DialogManager, **kwargs):
+    print(kwargs)
+    return dialog_manager.dialog_data
+
+
+confirm_form_message = Format("""
+Перевірте введені дані
+        
+<b>Чи плануєте ви селитися у гуртожитку?</b> <code>{hostel}</code>
+<b>Чи є у вас роздрукована заява з ЄДЕБО?</b> <code>{edbo}</code>
+<b>Обрані спеціальності:</b> <code>{specialities}</code>
+<b>Телефон</b> <code>{phone}</code>
+""")
 
 form = Dialog(
     Window(
@@ -79,7 +92,7 @@ form = Dialog(
             text=Format("{item.value}"),
             items=list(Confirms),
             item_id_getter=lambda x: x.value,
-            on_click=OnSelectHostel(),
+            on_click=OnSelectEdbo(),
             id="edbo"
         ),
         state=Form.edbo
@@ -101,13 +114,26 @@ form = Dialog(
         state=Form.speciality
     ),
     Window(
-        Const("Поділіться свій номер телефона"),
+        Const("Поділіться своїм номером телефона"),
         RequestContact(Const("📍 Надіслати")),
         MessageInput(contact_handler, content_types=[ContentType.CONTACT]),
         markup_factory=ReplyKeyboardFactory(
             resize_keyboard=True,
         ),
         state=Form.contact
+    ),
+    Window(
+        confirm_form_message,
+        Row(
+            SwitchTo(
+                text=Const("Заповнити ще раз"),
+                id="resetform",
+                state=Form.hostel
+            ),
+            Next(Const("Все вірно"))
+        ),
+        getter=get_data,
+        state=Form.confirm
     ),
     Window(
         Const("Надішліть свою геолокацію"),

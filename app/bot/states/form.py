@@ -7,6 +7,7 @@ class Form(StatesGroup):
     hostel = State()
     edbo = State()
     speciality = State()
-
     contact = State()
+    confirm = State()
+
     geo = State()
