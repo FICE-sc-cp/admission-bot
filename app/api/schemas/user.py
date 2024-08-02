@@ -75,5 +75,5 @@ class UserSchema(BaseModel):
     telegram_id: Optional[str] = Field(None, validation_alias="telegramId")
     phone: str
     is_dorm: bool
-    printed_edbo: str = Field(validation_alias="printedEdbo")
+    printed_edbo: bool = Field(validation_alias="printedEdbo")
     expected_specialities: str = Field(validation_alias="expectedSpecialities")
