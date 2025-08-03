@@ -9,10 +9,12 @@
 #   generate-hashes: false
 #   universal: false
 
-aiofiles==23.1.0
+aiofiles==24.1.0
     # via aiogram
-aiogram==3.0.0b9
-aiohttp==3.8.6
+aiogram==3.21.0
+aiohappyeyeballs==2.6.1
+    # via aiohttp
+aiohttp==3.12.15
     # via aiogram
 aiosignal==1.4.0
     # via aiohttp
@@ -32,8 +34,6 @@ attrs==25.3.0
 cachetools==5.3.1
 certifi==2025.8.3
     # via aiogram
-charset-normalizer==3.4.2
-    # via aiohttp
 click==8.1.8
     # via uvicorn
 colorama==0.4.6
@@ -68,12 +68,13 @@ multidict==6.6.3
     # via yarl
 phonenumbers==8.13.17
 propcache==0.3.2
+    # via aiohttp
     # via yarl
-pydantic==2.1.1
+pydantic==2.11.7
     # via aiogram
     # via fastapi
     # via pydantic-settings
-pydantic-core==2.4.0
+pydantic-core==2.33.2
     # via pydantic
 pydantic-settings==2.0.2
 python-dotenv==1.1.1
@@ -88,6 +89,7 @@ starlette==0.27.0
 tomli==2.2.1
     # via alembic
 typing-extensions==4.14.1
+    # via aiogram
     # via aiosignal
     # via alembic
     # via anyio
@@ -98,8 +100,10 @@ typing-extensions==4.14.1
     # via pydantic-core
     # via sqlalchemy
     # via starlette
+    # via typing-inspection
     # via uvicorn
+typing-inspection==0.4.1
+    # via pydantic
 uvicorn==0.23.2
-uvloop==0.17.0
 yarl==1.20.1
     # via aiohttp
