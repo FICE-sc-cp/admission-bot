@@ -1,4 +1,4 @@
-FROM python:3.1q as build
+FROM python:3.11 as build
 
 RUN apt-get update && apt-get install -y build-essential curl
 ENV VIRTUAL_ENV=/opt/venv \
