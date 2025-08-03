@@ -1,4 +1,5 @@
 from aiogram import Dispatcher, Bot
+from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
@@ -33,4 +34,9 @@ def create_dispatcher(sessionmaker: async_sessionmaker[AsyncSession]) -> Dispatc
 
 
 def create_bot(token: str) -> Bot:
-    return Bot(token=token, parse_mode=ParseMode.HTML)
+    return Bot(
+        token=token,
+        default=DefaultBotProperties(
+            parse_mode=ParseMode.HTML
+        )
+    )
