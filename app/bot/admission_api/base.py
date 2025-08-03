@@ -8,12 +8,12 @@ from app.settings import settings
 
 
 class BaseAPI:
-    _url: AnyUrl = settings.AAPI_HOST
+    _url: AnyUrl = settings.API_HOST
     _path: Optional[str] = None
     _base_url: Optional[URL] = None
 
     def __init__(self):
-        self._token = settings.AAPI_TOKEN.get_secret_value()
+        self._token = settings.API_TOKEN.get_secret_value()
         self._session = ClientSession(self.base_url, headers=self.get_headers())
 
     def get_headers(self):

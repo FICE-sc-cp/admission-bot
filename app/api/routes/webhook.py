@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Dispatcher, Bot
 from aiogram.types import Update
 from fastapi import APIRouter, Depends, Header, HTTPException
