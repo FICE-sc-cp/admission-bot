@@ -1,4 +1,4 @@
-FROM python:3.10 as build
+FROM python:3.1q as build
 
 RUN apt-get update && apt-get install -y build-essential curl
 ENV VIRTUAL_ENV=/opt/venv \
@@ -11,7 +11,7 @@ RUN /root/.local/bin/uv venv /opt/venv && \
     /root/.local/bin/uv pip install --no-cache -r requirements.lock
 
 
-FROM python:3.10-slim-bookworm
+FROM python:3.11-slim-bookworm
 COPY --from=build /opt/venv /opt/venv
 
 ENV PATH="/opt/venv/bin:$PATH"
